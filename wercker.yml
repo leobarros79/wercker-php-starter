@@ -1,0 +1,22 @@
+box: php:5.6-apache
+build:
+  steps:
+    - script:
+        name: pear install,
+        code: |
+          pear channel-discover pear.nrk.io
+          pear install nrk/Predis
+    - script:
+        name: move artifacts to /var/www/html
+        code: mv index.php /var/www/html
+    - script:
+        name: remove other files to slim down container
+        code: rm -rf $WERCKER_SOURCE_DIR/*
+    - internal/docker-push:
+        username: $DOCKER_USERNAME
+        password: $DOCKER_PASSWORD
+        repository: $DOCKER_REPOSITORY
+        registry: https://registry.hub.docker.com/v2/
+        tag: $DOCKER_TAG
+        ports: 80
+        cmd: apache2-foreground
