@@ -20,3 +20,12 @@ build:
         tag: $DOCKER_TAG
         ports: 80
         cmd: apache2-foreground
+restart-occs:
+  steps:
+    # Manage Oracle Container Cloud Service container
+    - peternagy/oracle-occs-container-util:
+        occs_user: $OCCS_USER
+        occs_password: $OCCS_PASSWORD
+        rest_server_url: $REST_SERVER_URL
+        function: $FUNCTION
+		deployment_name: $DEPLOYMENT_NAME
